@@ -10,11 +10,10 @@ char *sum(char *a, char *b, int len);
 char *create_new(char *b, int len);
 int test_calc(char *a, char *b, int len);
 
-int main() {
+char *input_a() {
     char *a = malloc(sizeof(char));
-    char *b = malloc(sizeof(char));
     char c;
-    size_t i = 0;
+    int i = 0;
     while (c != '\n') {
         c = getchar();
         a = realloc(a, i + 1);
@@ -22,9 +21,13 @@ int main() {
         i++;
     }
     a[i - 1] = '\0';
+    return a;
+}
 
-    i = 0;
-    c = ' ';
+char *input_b () {
+    char *b = malloc(sizeof(char));
+    char c;
+    int i = 0;
     while (c != '\n') {
         c = getchar();
         b = realloc(b, i + 1);
@@ -32,6 +35,35 @@ int main() {
         i++;
     }
     b[i - 1] = '\0';
+    return b;
+}
+
+
+int main() {
+    // char *a = malloc(sizeof(char));
+    char *a = input_a();
+    // char *b = malloc(sizeof(char));
+    char *b = input_b();
+    // char c;
+    // size_t i = 0;
+    // while (c != '\n') {
+    //     c = getchar();
+    //     a = realloc(a, i + 1);
+    //     a[i] = c;
+    //     i++;
+    // }
+    // a[i - 1] = '\0';
+    // int i;
+    // char c;
+    // i = 0;
+    // c = ' ';
+    // while (c != '\n') {
+    //     c = getchar();
+    //     b = realloc(b, i + 1);
+    //     b[i] = c;
+    //     i++;
+    // }
+    // b[i - 1] = '\0';
 
     char sign;
     scanf("%c", &sign);
