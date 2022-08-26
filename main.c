@@ -44,15 +44,13 @@ int main() {
             int len_b = strlen(b);
             int len;
             if (len_a > len_b) {
-                test_b = malloc(len_a * sizeof(char));
-                create_new(b, len_a);
+                test_b = create_new(b, len_a);
                 if (test_calc(a, test_b, len_a) == len_a)
                     len = len_a + 1;
                 else
                     len = len_a;
             } else if (len_b > len_a) {
-                test_a = malloc(len_b * sizeof(char));
-                create_new(a, len_b);
+                test_a = create_new(a, len_b);
                 if (test_calc(test_a, b, len_b) == len_b)
                     len = len_b + 1;
                 else
