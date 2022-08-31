@@ -31,6 +31,8 @@ int main() {
                 else if ((a[0] != '-' && b[0] != '-'))
                     result_diff(a, b);
             }
+            if (sign == '*') {
+            }
         } else
             printf("n/a");
         free(a);
