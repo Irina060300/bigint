@@ -89,10 +89,10 @@ void result_diff(char *a, char *b) {
         len = len_a - test_calc_dif(test_a, test_b, len_a);
         result = dif(test_a, test_b, a, b, len);
     } else if (len_b > len_a) {
-        test_a = create_new(a, len_b);
-        test_b = create_new(b, len_b);
+        test_a = create_new(a, len_b + 1);
+        test_b = create_new(b, len_b + 1);
         // len = len_b + 1 - test_calc_dif(test_b, test_a, len_b) + 1;
-        result = dif(test_b, test_a, b, a, len_b);
+        result = dif(test_b, test_a, b, a, len_b + 1);
 
     } else if (len_b = len_a) {
         if (max_of_ab(a, b) == 0) {
