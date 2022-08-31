@@ -1,32 +1,41 @@
 #include "header.h"
 
 int main() {
+    printf("Put first number: ");
     char *a = input();
+    printf("Put second number: ");
     char *b = input();
     char sign;
+    printf("Put sign: ");
     scanf("%c", &sign);
-
-    if (check_input(a, b) == 0 && sign == '+' || sign == '-' || sign == '*' || sign == '/') {
-        if (sign == '+') {
-            if ((a[0] == '-' && b[0] == '-') || (a[0] != '-' && b[0] != '-'))
-                result_sum(a, b);
-            else if (a[0] == '-' && b[0] != '-')
-                result_diff(b, a);
-            else
-                result_diff(a, b);
-        }
-        if (sign == '-') {
-            if ((a[0] == '-' && b[0] != '-'))
-                result_sum(a, b);
-            else if((a[0] != '-' && b[0] == '-'))
-                result_sum(a, b);
-            else if ((a[0] == '-' && b[0] == '-'))
-                result_diff(b, a);
-            else if ((a[0] != '-' && b[0] != '-'))
-                result_diff(a, b);
-        }
-    } else
-        printf("n/a");
+    if (a && b) {
+        clean(a);
+        clean(b);
+        // printf("%s", a);
+        if (check_input(a, b) == 0 && sign == '+' || sign == '-' || sign == '*' || sign == '/') {
+            if (sign == '+') {
+                if ((a[0] == '-' && b[0] == '-') || (a[0] != '-' && b[0] != '-'))
+                    result_sum(a, b);
+                else if (a[0] == '-' && b[0] != '-')
+                    result_diff(b, a);
+                else
+                    result_diff(a, b);
+            }
+            if (sign == '-') {
+                if ((a[0] == '-' && b[0] != '-'))
+                    result_sum(a, b);
+                else if ((a[0] != '-' && b[0] == '-'))
+                    result_sum(a, b);
+                else if ((a[0] == '-' && b[0] == '-'))
+                    result_diff(b, a);
+                else if ((a[0] != '-' && b[0] != '-'))
+                    result_diff(a, b);
+            }
+        } else
+            printf("n/a");
+        free(a);
+        free(b);
+    }
     return 0;
 }
 
@@ -41,7 +50,6 @@ void result_sum(char *a, char *b) {
         test_a = create_new(a, len_a);
         test_b = create_new(b, len_a);
         if (test_calc_sum(test_a, test_b, len_a) == 1) {
-            // printf("test_a %s test_b %s\n", test_a, test_b);
             len = len_a + 1;
         } else
             len = len_a;
@@ -54,14 +62,18 @@ void result_sum(char *a, char *b) {
             len = len_b + 1;
         } else
             len = len_b;
-        // printf("%d len", len);
     }
-    new_a = malloc(len * sizeof(char));
-    new_b = malloc(len * sizeof(char));
+    // new_a = malloc(len * sizeof(char));
+    // new_b = malloc(len * sizeof(char));
     new_a = create_new(a, len);
     new_b = create_new(b, len);
     result = sum(new_a, new_b, a, b, len);
-    printf("result = %s", result);
+    printf("Result = %s", result);
+    free(test_a);
+    free(test_b);
+    free(new_a);
+    free(new_b);
+    free(result);
 }
 
 void result_diff(char *a, char *b) {
@@ -75,15 +87,40 @@ void result_diff(char *a, char *b) {
         test_a = create_new(a, len_a);
         test_b = create_new(b, len_a);
         len = len_a - test_calc_dif(test_a, test_b, len_a);
-        dif(test_a, test_b, a, b, len);
+        result = dif(test_a, test_b, a, b, len);
     } else if (len_b > len_a) {
-        test_a = create_new(a, len_b + 1);
-        test_b = create_new(b, len_b + 1);
-        len = len_b + 1 - test_calc_dif(test_b, test_a, len_b) + 1;
-        dif(test_b, test_a, b, a, len);
-    }
-}
+        test_a = create_new(a, len_b);
+        test_b = create_new(b, len_b);
+        // len = len_b + 1 - test_calc_dif(test_b, test_a, len_b) + 1;
+        result = dif(test_b, test_a, b, a, len_b);
 
+    } else if (len_b = len_a) {
+        if (max_of_ab(a, b) == 0) {
+            test_a = create_new(a, len_b);
+            test_b = create_new(b, len_b);
+            len = len_b - test_calc_dif(test_a, test_b, len_b);
+            result = dif(test_a, test_b, a, b, len);
+        } else {
+            len = len_b + 1;
+            test_a = create_new(a, len);
+            test_b = create_new(b, len);
+            // len = len_b - test_calc_dif(test_a, test_b, len);
+            result = dif(test_b, test_a, b, a, len);
+        }
+    }
+    printf("Result = %s", result);
+    free(test_a);
+    free(test_b);
+    free(result);
+}
+int max_of_ab(char *a, char *b) {
+    int flag = 0;
+    size_t i = 0;
+    while (a[i] == b[i]) i++;
+    if (i < strlen(a) && b[i] > a[i]) flag++;
+    // printf("FLAG = %d", flag);
+    return flag;
+}
 int check_input(char *a, char *b) {
     int flag = 0;
     size_t len_a = strlen(a), len_b = strlen(b);
@@ -119,43 +156,14 @@ char *sum(char *new_a, char *new_b, char *a, char *b, int len) {
             result[0] = (char)(c + d + cel) % 10 + 48;
     } else
         result[0] = '-';
-    if (result[0] != '-')
-        i = 0;
-    else
-        i = 1;
-    int count = 0;
-    while (result[i] == '0') {
-        i++;
-        if (result[i] == '-') {
-            i++;
-            count++;
-            continue;
-        }
-        count++;
-    }
-    if (count > 0) {
-        if (result[0] != '-') {
-            i = 0;
-            if (count == len) count -= 1;
-        } else {
-            if (count == len - 1) {
-                i = 0;
-            } else {
-                i = 1;
-            }
-        }
-        while (i <= len) {
-            result[i] = result[i + count];
-            i++;
-        }
-    }
-    result[len - count] = '\0';
+    clean(result);
     return result;
 }
 
 char *input() {
-    char *b = malloc(sizeof(char));
-    char c = ' ';
+    char *b = NULL;
+    ;
+    char c = '\0';
     int i = 0;
     while (c != '\n') {
         c = getchar();
@@ -232,7 +240,7 @@ int test_calc_dif(char *a, char *b, int len) {
         if (i != len - 1) flag++;
         i++;
     }
-
+    free(mass);
     return flag;
 }
 
@@ -256,36 +264,37 @@ char *dif(char *new_a, char *new_b, char *a, char *b, int len) {
         if (c < d) {
             res = c - d + 10;
             result[i] = (char)c - d + 58;
-            if (i > 0 && new_a[i - def - 1] != '0') {
+            if (i > 1 && new_a[i - def - 1] != '0') {
                 dif = 1;
             } else {
-                if (i > 0 && new_a[i - def - 1] == '0') {
+                if (i > 1 && new_a[i - def - 1] == '0') {
                     dif = -9;
                 }
-                if (i > 0 && new_a[i - def - 1] != '0') {
+                if (i > 1 && new_a[i - def - 1] != '0') {
                     dif = 1;
                 }
             }
         }
+        // printf("result[%d] = %c\n", i, result[i]);
     }
-    if (result[0] == '0') result[0] = '-';
 
-    if (result[0] != '-')
-        i = 0;
-    else
-        i = 1;
+    if (result[0] == '0' && len > 1) result[0] = '-';
+    clean(result);
+    // printf("result = %s", result);
+    return result;
+}
+
+char *clean(char *a) {
+    size_t len = strlen(a);
+    size_t i = 0;
+    if (a[i] == '-') i = 1;
     int count = 0;
-    while (result[i] == '0') {
+    while (a[i] == '0') {
         i++;
-        if (result[i] == '-') {
-            i++;
-            count++;
-            continue;
-        }
         count++;
     }
     if (count > 0) {
-        if (result[0] != '-') {
+        if (a[0] != '-') {
             i = 0;
             if (count == len) count -= 1;
         } else {
@@ -296,11 +305,9 @@ char *dif(char *new_a, char *new_b, char *a, char *b, int len) {
             }
         }
         while (i <= len) {
-            result[i] = result[i + count];
+            a[i] = a[i + count];
             i++;
         }
     }
-    result[len - count] = '\0';
-    printf("result = %s", result);
-    return result;
+    a[len - count] = '\0';
 }

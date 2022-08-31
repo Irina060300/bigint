@@ -14,5 +14,7 @@ int test_calc_dif(char *a, char *b, int len);
 void result_sum(char *a, char *b);
 void result_diff(char *a, char *b);
 char *dif (char *new_a, char *new_b, char *a, char *b, int len);
+char *clean(char *a);
+int max_of_ab(char *a, char *b);
 
 #endif  //  HEADER_H_
