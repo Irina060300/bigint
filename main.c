@@ -12,7 +12,7 @@ int main() {
         clean(a);
         clean(b);
         // printf("%s", a);
-        if (check_input(a, b) == 0 && sign == '+' || sign == '-' || sign == '*' || sign == '/') {
+        if (check_input(a, b) == 0 && (sign == '+' || sign == '-' || sign == '*' || sign == '/')) {
             if (sign == '+') {
                 if ((a[0] == '-' && b[0] == '-') || (a[0] != '-' && b[0] != '-'))
                     result_sum(a, b);
@@ -96,7 +96,7 @@ void result_diff(char *a, char *b) {
         // len = len_b + 1 - test_calc_dif(test_b, test_a, len_b) + 1;
         result = dif(test_b, test_a, b, a, len_b + 1);
 
-    } else if (len_b = len_a) {
+    } else if (len_b == len_a) {
         if (max_of_ab(a, b) == 0) {
             test_a = create_new(a, len_b);
             test_b = create_new(b, len_b);
@@ -169,13 +169,38 @@ char *input() {
     int i = 0;
     while (c != '\n') {
         c = getchar();
-        b = realloc(b, i + 1);
+        b = realloc(b, i);
         b[i] = c;
         i++;
     }
+    // printf("a%ca\n", b[i - 1]);
     b[i - 1] = '\0';
     return b;
 }
+
+
+// char *input() {
+//     char *a = malloc(sizeof(char) * BUFFER_SIZE);
+//     int len = BUFFER_SIZE;
+//     char c = 0;
+//     int i = 0;
+//     while (c != '\n') {
+//         c = (char) getchar();
+//         if (i >= len) {
+//             if (DEBUG) printf("REALLOC, old_size=%d, new_size=%d\n", len, BUFFER_SIZE * (i / BUFFER_SIZE + 1));
+//             len = BUFFER_SIZE * (i / BUFFER_SIZE + 1);
+//             a = realloc(a, len);
+//         }
+//         a[i] = c;
+//         i++;
+//     }
+//     if (DEBUG) printf("REALLOC, old_size=%d, new_size=%d\n", len, i);
+//     a = realloc(a, i);
+//     a[i - 1] = '\0';
+//     return a;
+// }
+
+
 char *create_new(char *b, int len) {
     int def_b = len - strlen(b);
     char *new_b = malloc(len * sizeof(char));
@@ -236,6 +261,8 @@ int test_calc_dif(char *a, char *b, int len) {
                 }
             }
         }
+
+        // printf("mass[%d] = %d, dif = %d\n", i, mass[i], dif);
     }
     i = 0;
     while (mass[i] == 0 && i < len) {
@@ -266,13 +293,13 @@ char *dif(char *new_a, char *new_b, char *a, char *b, int len) {
         if (c < d) {
             res = c - d + 10;
             result[i] = (char)c - d + 58;
-            if (i > 1 && new_a[i - def - 1] != '0') {
+            if (i > 0 && new_a[i - def - 1] != '0') {
                 dif = 1;
             } else {
-                if (i > 1 && new_a[i - def - 1] == '0') {
+                if (i > 0 && new_a[i - def - 1] == '0') {
                     dif = -9;
                 }
-                if (i > 1 && new_a[i - def - 1] != '0') {
+                if (i > 0 && new_a[i - def - 1] != '0') {
                     dif = 1;
                 }
             }
@@ -286,7 +313,7 @@ char *dif(char *new_a, char *new_b, char *a, char *b, int len) {
     return result;
 }
 
-char *clean(char *a) {
+void clean(char *a) {
     size_t len = strlen(a);
     size_t i = 0;
     if (a[i] == '-') i = 1;
