@@ -1,6 +1,7 @@
 #include "header.h"
 
-void result_sum(char *a, char *b) {
+char *result_sum(char *a, char *b) {
+    // printf("a = %s, b = %s\n", a, b);
     char *result;
     char *new_a, *new_b;
     char *test_a, *test_b;
@@ -29,12 +30,13 @@ void result_sum(char *a, char *b) {
     new_a = create_new(a, len);
     new_b = create_new(b, len);
     result = sum(new_a, new_b, a, b, len);
-    printf("Result = %s", result);
+
     free(test_a);
     free(test_b);
-    free(new_a);
-    free(new_b);
-    free(result);
+    // free(new_a);
+    // free(new_b);
+    return result;
+    // free(result);
 }
 
 void result_diff(char *a, char *b) {
@@ -74,26 +76,80 @@ void result_diff(char *a, char *b) {
     free(test_b);
     free(result);
 }
-int max_of_ab(char *a, char *b) {
-    int flag = 0;
-    size_t i = 0;
-    while (a[i] == b[i]) i++;
-    if (i < strlen(a) && b[i] > a[i]) flag++;
-    // printf("FLAG = %d", flag);
-    return flag;
+
+char **result_product(char *a, char *b) {
+    char *result;
+    char *new_a, *new_b;
+    char *test_a, *test_b;
+    char **terms;
+    int len_a = strlen(a);
+    int len_b = strlen(b);
+    int len = 0;
+    if (a[0] == '-' && b[0] != '-' || b[0] == '-' && a[0] != '-') {
+        if (len_a > len_b) {
+            len = len_a * 2 + 3;
+        } else {
+            len = len_b * 2 + 3;
+        }
+        new_a = create_new(a, len);
+
+        new_b = create_new(b, len);
+
+        terms = product(new_a, new_b, a, b, len);
+
+    } else {
+        if (len_a > len_b) {
+            len = len_a * 2 + 3;
+        } else {
+            len = len_b * 2 + 3;
+        }
+        new_a = create_new(a, len);
+        new_b = create_new(b, len);
+        // printf("new_a = %s new_b = %s\n", new_a, new_b);
+        terms = product(new_a, new_b, a, b, len);
+        // result = sum(terms[1], terms[2], a, b, len);
+        // printf("%s", result);
+        return terms;
+    }
 }
-int check_input(char *a, char *b) {
-    int flag = 0;
-    size_t len_a = strlen(a), len_b = strlen(b);
-    for (size_t i = 0; i < len_a; i++) {
-        if (!(strchr("-0123456789", a[i]))) flag++;
-        if (a[i] == '-' && i != 0) flag++;
+
+char **product(char *new_a, char *new_b, char *a, char *b, int len) {
+    // int def = len - strlen(new_a);
+    int i = 0, c = 0, d = 0, cel, move_left = 0, count;
+    char **terms;
+    terms = malloc(len * sizeof(char *));
+    for (int i = 0; i < len; i++) {
+        terms[i] = malloc(len * sizeof(char));
     }
-    for (size_t i = 0; i < len_b; i++) {
-        if (!(strchr("-0123456789", b[i]))) flag++;
-        if (b[i] == '-' && i != 0) flag++;
+    for (i = len - 1; i >= 0; i--) {
+        d = (int)new_b[i] - 48;
+        cel = 0;
+        count = 0;
+        for (int j = len - 1; j >= 0; j--) {
+            if (count < move_left) {
+                terms[i][j] = '0';
+                count++;
+            }
+            c = (int)new_a[j] - 48;
+            if (j - move_left >= 0) terms[i][j - move_left] = (char)(c * d + cel) % 10 + 48;
+            cel = (c * d + cel) / 10;
+        }
+        move_left++;
     }
-    return flag;
+    // for (int i = 0; i < len; i++) {
+    //     printf("%s\n", terms[i]);
+    // }
+    for (int i = len - 1; i >= 0; i--) {
+        // printf("i = %d, trems[i] = %s, pisdec\n", i, terms[i]);
+        clean(terms[i]);
+        // printf("i = %d, trems[i] = %s, pisdec\n", i, terms[i]);
+    }
+
+    return terms;
+    // for (int i = 0; i < len - 1; i++) {
+
+    // }
+    // printf("%s", result);
 }
 
 char *sum(char *new_a, char *new_b, char *a, char *b, int len) {
@@ -120,6 +176,27 @@ char *sum(char *new_a, char *new_b, char *a, char *b, int len) {
     clean(result);
     return result;
 }
+int max_of_ab(char *a, char *b) {
+    int flag = 0;
+    size_t i = 0;
+    while (a[i] == b[i]) i++;
+    if (i < strlen(a) && b[i] > a[i]) flag++;
+    // printf("FLAG = %d", flag);
+    return flag;
+}
+int check_input(char *a, char *b) {
+    int flag = 0;
+    size_t len_a = strlen(a), len_b = strlen(b);
+    for (size_t i = 0; i < len_a; i++) {
+        if (!(strchr("-0123456789", a[i]))) flag++;
+        if (a[i] == '-' && i != 0) flag++;
+    }
+    for (size_t i = 0; i < len_b; i++) {
+        if (!(strchr("-0123456789", b[i]))) flag++;
+        if (b[i] == '-' && i != 0) flag++;
+    }
+    return flag;
+}
 
 char *input() {
     char *b = NULL;
@@ -136,7 +213,6 @@ char *input() {
     b[i - 1] = '\0';
     return b;
 }
-
 
 // char *input() {
 //     char *a = malloc(sizeof(char) * BUFFER_SIZE);
@@ -158,7 +234,6 @@ char *input() {
 //     a[i - 1] = '\0';
 //     return a;
 // }
-
 
 char *create_new(char *b, int len) {
     int def_b = len - strlen(b);

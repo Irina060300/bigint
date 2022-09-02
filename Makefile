@@ -6,5 +6,4 @@ main.o: header.h main.c
 	gcc main.c -c 
 clean: 
 	rm -rf *calc *.o
-rebuild: 
-	clean calc
+rebuild: clean calc
