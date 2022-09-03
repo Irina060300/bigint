@@ -71,6 +71,7 @@ int main() {
             printf("n/a");
         free(a);
         free(b);
+        // free(res);
     }
     return 0;
 }

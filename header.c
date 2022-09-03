@@ -9,32 +9,32 @@ char *result_sum(char *a, char *b) {
     int len_b = strlen(b);
     int len = 0;
     if (len_a > len_b) {
-        test_a = create_new(a, len_a);
-        test_b = create_new(b, len_a);
-        if (test_calc_sum(test_a, test_b, len_a) == 1) {
+        // test_a = create_new(a, len_a);
+        // test_b = create_new(b, len_a);
+        // if (test_calc_sum(test_a, test_b, len_a) == 1) {
             len = len_a + 1;
-        } else
-            len = len_a;
+        // } else
+            len = len_a + 10;
     }
     if (len_b >= len_a) {
-        if (a[0] == '-' && b[0] != '-') len_b++;
-        test_a = create_new(a, len_b);
-        test_b = create_new(b, len_b);
-        if (test_calc_sum(test_a, test_b, len_b) == 1) {
+        // if (a[0] == '-' && b[0] != '-') len_b++;
+        // test_a = create_new(a, len_b);
+        // test_b = create_new(b, len_b);
+        // if (test_calc_sum(test_a, test_b, len_b) == 1) {
             len = len_b + 1;
-        } else
-            len = len_b;
+        // } else
+            len = len_b + 10;
     }
-    // new_a = malloc(len * sizeof(char));
-    // new_b = malloc(len * sizeof(char));
+    new_a = malloc(len * sizeof(char));
+    new_b = malloc(len * sizeof(char));
     new_a = create_new(a, len);
     new_b = create_new(b, len);
     result = sum(new_a, new_b, a, b, len);
 
-    free(test_a);
-    free(test_b);
-    // free(new_a);
-    // free(new_b);
+    // free(test_a);
+    // free(test_b);
+    free(new_a);
+    free(new_b);
     return result;
     // free(result);
 }
@@ -78,6 +78,7 @@ void result_diff(char *a, char *b) {
 }
 
 char **result_product(char *a, char *b) {
+    printf("shshsdfhsdh");
     char *result;
     char *new_a, *new_b;
     char *test_a, *test_b;
@@ -91,10 +92,10 @@ char **result_product(char *a, char *b) {
         } else {
             len = len_b * 2 + 3;
         }
+
         new_a = create_new(a, len);
-
         new_b = create_new(b, len);
-
+        printf("new_a = %s new_b = %s\n", new_a, new_b);
         terms = product(new_a, new_b, a, b, len);
 
     } else {
@@ -105,12 +106,12 @@ char **result_product(char *a, char *b) {
         }
         new_a = create_new(a, len);
         new_b = create_new(b, len);
-        // printf("new_a = %s new_b = %s\n", new_a, new_b);
+        printf("new_a = %s new_b = %s\n", new_a, new_b);
         terms = product(new_a, new_b, a, b, len);
         // result = sum(terms[1], terms[2], a, b, len);
         // printf("%s", result);
-        return terms;
     }
+    return terms;
 }
 
 char **product(char *new_a, char *new_b, char *a, char *b, int len) {
@@ -140,9 +141,9 @@ char **product(char *new_a, char *new_b, char *a, char *b, int len) {
     //     printf("%s\n", terms[i]);
     // }
     for (int i = len - 1; i >= 0; i--) {
-        // printf("i = %d, trems[i] = %s, pisdec\n", i, terms[i]);
+        printf("i = %d, trems[i] = %s, pisdec\n", i, terms[i]);
         clean(terms[i]);
-        // printf("i = %d, trems[i] = %s, pisdec\n", i, terms[i]);
+        printf("i = %d, trems[i] = %s, pisdec\n", i, terms[i]);
     }
 
     return terms;
@@ -208,6 +209,7 @@ char *input() {
         b = realloc(b, i);
         b[i] = c;
         i++;
+        // if (i > 2022) b[0] = 'a';
     }
     // printf("a%ca\n", b[i - 1]);
     b[i - 1] = '\0';
