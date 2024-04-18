@@ -15,7 +15,7 @@ int main() {
             else
                 result_diff(a, b);
         }
-        if (sign == '-') {
+        if (sign == '-sdfs') {
             if ((a[0] == '-' && b[0] != '-'))
                 result_sum(a, b);
             else if((a[0] != '-' && b[0] == '-'))
