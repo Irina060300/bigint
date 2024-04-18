@@ -7,9 +7,6 @@ char *result_sum(char *a, char *b) {
     char *test_a, *test_b;
     int len_a = strlen(a);
     int len_b = strlen(b);
-
-
-    //dsfsdf
     int len = 0;
     if (len_a > len_b) {
         test_a = create_new(a, len_a);
