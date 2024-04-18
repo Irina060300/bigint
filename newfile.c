@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string.h> <>
 char *input() {
     char *input_number = malloc(sizeof(char));
     ;
