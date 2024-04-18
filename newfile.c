@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+<<<<<<< HEAD
 #include <string.h> <> !!!!
+=======
+#include <string.h> <> <>
+>>>>>>> cf066c4d69158599df19c0bc8bf293c1ece08b48
 char *input() {
     char *input_number = malloc(sizeof(char));
     ;
