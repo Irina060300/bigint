@@ -77,11 +77,11 @@ void result_diff(char *a, char *b) {
     free(result);
 }
 
-char **result_product(char *a, char *b) {
+char **result_product(char *a, char *b, char **terms) {
     char *result;
     char *new_a, *new_b;
     char *test_a, *test_b;
-    char **terms;
+    // char **terms;
     int len_a = strlen(a);
     int len_b = strlen(b);
     int len = 0;
@@ -95,7 +95,7 @@ char **result_product(char *a, char *b) {
 
         new_b = create_new(b, len);
 
-        terms = product(new_a, new_b, a, b, len);
+        terms = product(new_a, new_b, a, b, len, terms);
 
     } else {
         if (len_a > len_b) {
@@ -106,24 +106,24 @@ char **result_product(char *a, char *b) {
         new_a = create_new(a, len);
         new_b = create_new(b, len);
         // printf("new_a = %s new_b = %s\n", new_a, new_b);
-        terms = product(new_a, new_b, a, b, len);
+        terms = product(new_a, new_b, a, b, len, terms);
         // result = sum(terms[1], terms[2], a, b, len);
         // printf("%s", result);
         return terms;
     }
 }
 
-char **product(char *new_a, char *new_b, char *a, char *b, int len) {
+char **product(char *new_a, char *new_b, char *a, char *b, int len, char **terms) {
     // int def = len - strlen(new_a);
-    int i = 0, c = 0, d = 0, cel, move_left = 0, count;
-    char **terms;
-    terms = malloc(len * sizeof(char *));
-    for (int i = 0; i < len; i++) {
-        terms[i] = malloc(len * sizeof(char));
-    }
+    int i = 0, c = 0, d = 0, cel = 0, move_left = 0, count;
+    // char **terms;
+    // terms = malloc(len * sizeof(char *));
+    // for (int i = 0; i < len; i++) {
+    //     terms[i] = malloc(len * sizeof(char));
+    // }
     for (i = len - 1; i >= 0; i--) {
         d = (int)new_b[i] - 48;
-        cel = 0;
+        // cel = 0;
         count = 0;
         for (int j = len - 1; j >= 0; j--) {
             if (count < move_left) {
@@ -189,7 +189,10 @@ int check_input(char *a, char *b) {
     size_t len_a = strlen(a), len_b = strlen(b);
     for (size_t i = 0; i < len_a; i++) {
         if (!(strchr("-0123456789", a[i]))) flag++;
-        if (a[i] == '-' && i != 0) flag++;
+        if (a[i] == '-' && i != 0) {
+            flag++;
+            printf("i = %lu, flag = %d\n", i, flag);
+        }
     }
     for (size_t i = 0; i < len_b; i++) {
         if (!(strchr("-0123456789", b[i]))) flag++;

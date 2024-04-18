@@ -10,10 +10,12 @@ int main() {
     scanf("%c", &sign);
     char **terms;
     char *res;
+    char *new_a, *new_b, *test_a, *test_b, *result;
+    int len_a, len_b, len;
     if (a && b) {
         clean(a);
         clean(b);
-        // printf("%s", a);
+        printf("%s", a);
         if (check_input(a, b) == 0 /*&& (sign == '+' || sign == '-' || sign == '*' || sign == '/')*/) {
             switch (sign) {
                 case '+':
@@ -36,16 +38,22 @@ int main() {
                         result_diff(a, b);
                     break;
                 case '*':
-             
-                    terms = result_product(a, b);
                     // for (int i = 0; i < strlen(a) * 2 + 1; i++) {
                     //     printf("%s\n", terms[i]);
                     // }
-                    int len_a = strlen(a);
-                    int len_b = strlen(b);
-                    int len = 0;
-                    if (len_a > len_b) len = 2 * len_a + 3;
-                    else len = 2 * len_b + 3;
+                    len_a = strlen(a), len_b = strlen(b), len = 0;
+                    if (len_a > len_b)
+                        len = 2 * len_a + 3;
+                    else
+                        len = 2 * len_b + 3;
+                    terms = malloc(len * sizeof(char *));
+                    for (int i = 0; i < len; i++) {
+                        terms[i] = malloc(len * sizeof(char));
+                    }
+                    result_product(a, b, terms);
+                    for (int i = 0; i < len; i++) {
+                        printf("%s\n", terms[i]);
+                    }
                     char *sum = malloc(sizeof(char) * len);
                     sum = terms[0];
                     for (int i = 1; i < len; i++) {
